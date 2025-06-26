@@ -1,0 +1,30 @@
+{
+  "name": "backend2-coder",
+  "version": "1.0.0",
+  "description": "Proyecto de backend 2 de Coderhouse",
+  "license": "ISC",
+  "author": "Ignacio Lencina",
+  "type": "module",
+  "main": "./src/server.js",
+  "scripts": {
+    "build": "esbuild src/server.js --bundle --platform=node --outfile=dist/server.cjs --minify",
+    "start": "node --env-file=.env dist/server.cjs",
+    "dev": "node --watch --env-file=.env src/server.js",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "http-status-codes": "^2.3.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1"
+  }
+}
