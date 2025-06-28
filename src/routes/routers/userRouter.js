@@ -11,3 +11,6 @@ userRouter.post(
   (req, res, next) => validateBody(req, res, next, post_userValidationSchema),
   Users.PostController.postUser,
 );
+
+userRouter.get('/', Users.GetController.getUsers);
+userRouter.get('/:id', Users.GetController.getUser);
