@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 
 import './database/database.js';
+import passport from './middlewares/passport.js';
 
 import { mainRouter } from './routes/mainRouter.js';
 
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(passport.initialize);
 
 app.use('/api/v1', mainRouter);
 

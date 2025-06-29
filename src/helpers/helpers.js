@@ -1,5 +1,8 @@
 import HttpCodes from 'http-status-codes';
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+const { SECRET_KEY } = process.env;
 
 export const internalError = (res, e, message = 'Ocurrió un error') => {
   console.error(e);
@@ -17,4 +20,26 @@ export const hashPassword = (plainPassword) => {
 
 export const comparePassword = (plainPassword, hashedPassword) => {
   return bcryptjs.compareSync(plainPassword, hashedPassword);
+};
+
+export const generateToken = (user) => {
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const options = {
+    expiresIn: '1h',
+  };
+
+  return jwt.sign(payload, SECRET_KEY, options);
+};
+
+export const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, SECRET_KEY);
+  } catch (error) {
+    return null;
+  }
 };
