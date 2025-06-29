@@ -8,13 +8,13 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const post_userValidationSchema = Joi.object({
   first_name: Joi.string().trim().min(3).max(30).required().messages({
     'string.min': "El campo 'first_name' debe tener como mínimo 3 caracteres",
-    'string.max': "El campo 'first_name' debe tener como mucho 30 caracteres",
+    'string.max': "El campo 'first_name' debe tener como máximo 30 caracteres",
     'any.required': "El campo 'first_name' es requerido",
     '*': "Revisa el campo 'first_name'",
   }),
   last_name: Joi.string().trim().min(3).max(30).required().messages({
     'string.min': "El campo 'last_name' debe tener como mínimo 3 caracteres",
-    'string.max': "El campo 'last_name' debe tener como mucho 30 caracteres",
+    'string.max': "El campo 'last_name' debe tener como máximo 30 caracteres",
     'any.required': "El campo 'last_name' es requerido",
     '*': "Revisa el campo 'last_name'",
   }),
