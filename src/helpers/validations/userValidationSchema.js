@@ -29,7 +29,7 @@ export const post_userValidationSchema = Joi.object({
       'string.max': "El campo 'email' debe tener maximo 50 caracteres",
       'string.pattern.base': 'El correo debe contener @ y un dominio',
       'any.required': "El campo 'email' es requerido",
-      '*': "El campo 'email' tiene algún error",
+      '*': "El campo 'email' es requerido",
     }),
   age: Joi.number().integer().min(1).max(100).required().messages({
     'number.base': "El campo 'age' debe ser un número",

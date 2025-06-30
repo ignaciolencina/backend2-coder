@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(passport.initialize);
+app.use(passport.initialize());
 
 app.use('/api/v1', mainRouter);
 

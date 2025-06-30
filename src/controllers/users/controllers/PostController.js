@@ -25,6 +25,13 @@ export class PostController {
         message: 'Usuario guardado correctamente',
       });
     } catch (e) {
+      if (e.code === 11000 && e.keyPattern && e.keyPattern.email) {
+        return res.status(HttpCodes.CONFLICT).json({
+          data: null,
+          message:
+            'El email ya está registrado. Por favor, utiliza otro email.',
+        });
+      }
       internalError(res, e, 'Ocurrió un error al guardar el usuario');
     }
   }

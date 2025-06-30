@@ -11,3 +11,5 @@ authRouter.post(
   (req, res, next) => validateBody(req, res, next, post_loginValidationSchema),
   Auth.PostController.postLogin,
 );
+
+authRouter.get('/current', Auth.GetController.current);
