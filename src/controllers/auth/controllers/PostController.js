@@ -20,10 +20,16 @@ export class PostController {
       try {
         const token = generateToken(user);
 
+        res.cookie('jwt', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+          sameSite: 'strict',
+          maxAge: 60 * 60 * 1000, // 1 hora (igual que el token)
+        });
+
         return res.json({
           data: {
             user,
-            token,
           },
           message: 'Login exitoso',
         });
@@ -31,5 +37,13 @@ export class PostController {
         return internalError(res, error, 'Error al generar el token');
       }
     })(req, res, next);
+  }
+
+  static async postLogout(req, res) {
+    res.clearCookie('jwt');
+    return res.json({
+      data: null,
+      message: 'Logout exitoso',
+    });
   }
 }

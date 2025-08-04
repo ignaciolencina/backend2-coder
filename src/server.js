@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 import './database/database.js';
 import passport from './middlewares/passport.js';
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use('/api/v1', mainRouter);

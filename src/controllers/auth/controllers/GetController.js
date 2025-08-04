@@ -4,7 +4,7 @@ import { internalError } from '../../../helpers/helpers.js';
 
 export class GetController {
   static async current(req, res, next) {
-    passport.authenticate('jwt', { session: false }, (err, user) => {
+    passport.authenticate('current', { session: false }, (err, user, info) => {
       if (err) {
         return internalError(res, err, 'Error en la validación del token');
       }
@@ -12,7 +12,9 @@ export class GetController {
       if (!user) {
         return res.status(401).json({
           data: null,
-          message: 'Token inválido o expirado',
+          message:
+            info?.message ||
+            'Token inválido, expirado o no proporcionado en la cookie',
         });
       }
 

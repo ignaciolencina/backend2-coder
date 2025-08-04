@@ -13,3 +13,5 @@ authRouter.post(
 );
 
 authRouter.get('/current', Auth.GetController.current);
+
+authRouter.post('/logout', Auth.PostController.postLogout);

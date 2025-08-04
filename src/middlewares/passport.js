@@ -1,11 +1,19 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JwtStrategy } from 'passport-jwt';
 
 import UserModel from '../models/userSchema.js';
 import { comparePassword } from '../helpers/helpers.js';
 
 const { SECRET_KEY } = process.env;
+
+const extractJwtFromCookie = (req) => {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies.jwt;
+  }
+  return token;
+};
 
 // Local - Login
 passport.use(
@@ -46,12 +54,11 @@ passport.use(
   ),
 );
 
-// JWT - Tokens
 passport.use(
-  'jwt',
+  'current',
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: extractJwtFromCookie,
       secretOrKey: SECRET_KEY,
     },
     async (jwtPayload, done) => {
@@ -59,7 +66,7 @@ passport.use(
         const user = await UserModel.findById(jwtPayload.id);
 
         if (!user) {
-          return done(null, false);
+          return done(null, false, { message: 'Usuario no encontrado' });
         }
 
         const userWithoutPassword = {
@@ -72,7 +79,7 @@ passport.use(
         };
         return done(null, userWithoutPassword);
       } catch (error) {
-        return done(error);
+        return done(error, false, { message: 'Error al validar el token' });
       }
     },
   ),

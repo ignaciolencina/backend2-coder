@@ -6,7 +6,7 @@ import { requireRole } from '../../middlewares/auth.js';
 
 export const adminRouter = express.Router();
 
-adminRouter.use(passport.authenticate('jwt', { session: false }));
+adminRouter.use(passport.authenticate('current', { session: false }));
 
 adminRouter.get(
   '/panel',
