@@ -1,7 +1,11 @@
 module.exports = {
   env: {
-    es6: true,
-    browser: true,
+    es2020: true,
+    node: true,
+  },
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
   },
   rules: {
     'import/extensions': 'off',
