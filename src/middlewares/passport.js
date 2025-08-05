@@ -2,7 +2,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy } from 'passport-jwt';
 
-import UserModel from '../models/userSchema.js';
+import { UserRepository } from '../repositories/UserRepository.js';
+import { UserDTO } from '../dto/UserDTO.js';
 import { comparePassword } from '../helpers/helpers.js';
 
 const { SECRET_KEY } = process.env;
@@ -25,7 +26,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserRepository.getUserByEmail(email);
 
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' });
@@ -37,16 +38,9 @@ passport.use(
           return done(null, false, { message: 'Contraseña incorrecta' });
         }
 
-        const userWithoutPassword = {
-          id: user._id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          age: user.age,
-          role: user.role,
-        };
+        const userDTO = UserDTO.fromUser(user);
 
-        return done(null, userWithoutPassword);
+        return done(null, userDTO);
       } catch (error) {
         return done(error);
       }
@@ -63,21 +57,13 @@ passport.use(
     },
     async (jwtPayload, done) => {
       try {
-        const user = await UserModel.findById(jwtPayload.id);
+        const user = await UserRepository.getUserById(jwtPayload.id);
 
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' });
         }
 
-        const userWithoutPassword = {
-          id: user._id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          age: user.age,
-          role: user.role,
-        };
-        return done(null, userWithoutPassword);
+        return done(null, user);
       } catch (error) {
         return done(error, false, { message: 'Error al validar el token' });
       }

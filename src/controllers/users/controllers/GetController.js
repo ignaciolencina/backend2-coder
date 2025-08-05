@@ -1,24 +1,13 @@
-import UserModel from '../../../models/userSchema.js';
+import { UserRepository } from '../../../repositories/UserRepository.js';
 import { internalError } from '../../../helpers/helpers.js';
 
 export class GetController {
   static async getUsers(_, res) {
     try {
-      const data = await UserModel.find();
-
-      const filteredData = data.map((user) => {
-        return {
-          id: user._doc._id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          age: user.age,
-          role: user.role,
-        };
-      });
+      const users = await UserRepository.getAllUsers();
 
       res.json({
-        data: filteredData,
+        data: users,
         message: 'Usuarios encontrados correctamente',
       });
     } catch (e) {
@@ -32,23 +21,21 @@ export class GetController {
     } = req;
 
     try {
-      const data = await UserModel.findOne({ _id: id });
+      const user = await UserRepository.getUserById(id);
 
-      const filteredData = {
-        id: data._id,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        age: data.age,
-        role: data.role,
-      };
+      if (!user) {
+        return res.status(404).json({
+          data: null,
+          message: 'Usuario no encontrado',
+        });
+      }
 
-      res.json({
-        data: filteredData,
+      return res.json({
+        data: user,
         message: 'Usuario encontrado correctamente',
       });
     } catch (e) {
-      internalError(res, e, 'Ocurrió un error al leer la lista de usuarios');
+      return internalError(res, e, 'Ocurrió un error al buscar el usuario');
     }
   }
 }
