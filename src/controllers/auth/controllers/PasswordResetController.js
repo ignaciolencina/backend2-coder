@@ -6,6 +6,7 @@ import {
   generateResetToken,
   getResetTokenExpiration,
   hashPassword,
+  comparePassword,
 } from '../../../helpers/helpers.js';
 
 export class PasswordResetController {
@@ -58,6 +59,16 @@ export class PasswordResetController {
         return res.status(HttpCodes.BAD_REQUEST).json({
           data: null,
           message: 'Token inválido o expirado',
+        });
+      }
+
+      const isSamePassword = comparePassword(newPassword, user.password);
+
+      if (isSamePassword) {
+        return res.status(HttpCodes.BAD_REQUEST).json({
+          data: null,
+          message:
+            'La nueva contraseña debe ser diferente a la contraseña actual',
         });
       }
 
