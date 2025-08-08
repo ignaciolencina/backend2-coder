@@ -25,4 +25,16 @@ export class UserRepository {
     const updatedUser = await UserDAO.updateById(id, updateData);
     return updatedUser ? UserDTO.fromUser(updatedUser) : null;
   }
+
+  static async updateResetToken(email, token, expires) {
+    return UserDAO.updateResetToken(email, token, expires);
+  }
+
+  static async getUserByResetToken(token) {
+    return UserDAO.findByResetToken(token);
+  }
+
+  static async clearResetToken(id) {
+    return UserDAO.clearResetToken(id);
+  }
 }

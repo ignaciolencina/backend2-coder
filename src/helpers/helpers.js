@@ -1,6 +1,7 @@
 import HttpCodes from 'http-status-codes';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const { SECRET_KEY } = process.env;
 
@@ -42,4 +43,12 @@ export const verifyToken = (token) => {
   } catch (error) {
     return null;
   }
+};
+
+export const generateResetToken = () => {
+  return crypto.randomBytes(32).toString('hex');
+};
+
+export const getResetTokenExpiration = () => {
+  return new Date(Date.now() + 3600000); // 1 hora desde ahora
 };

@@ -25,4 +25,32 @@ export class UserDAO {
   static async deleteById(id) {
     return UserModel.findByIdAndDelete(id);
   }
+
+  static async findByResetToken(token) {
+    return UserModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+  }
+
+  static async updateResetToken(email, token, expires) {
+    return UserModel.findOneAndUpdate(
+      { email },
+      { resetPasswordToken: token, resetPasswordExpires: expires },
+      { new: true },
+    );
+  }
+
+  static async clearResetToken(id) {
+    return UserModel.findByIdAndUpdate(
+      id,
+      {
+        $unset: {
+          resetPasswordToken: 1,
+          resetPasswordExpires: 1,
+        },
+      },
+      { new: true },
+    );
+  }
 }
