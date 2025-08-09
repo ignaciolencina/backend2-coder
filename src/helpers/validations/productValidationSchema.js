@@ -12,6 +12,8 @@ export const post_productValidationSchema = Joi.object({
     '*': "Revisa el campo 'description'",
   }),
   code: Joi.string().trim().regex(codeRegex).required().messages({
+    'string.pattern.base':
+      "El campo 'code' debe contener 3 letras mayúsculas seguidas de 5 números",
     'any.required': "El campo 'code' es requerido",
     '*': "Revisa el campo 'code'",
   }),
