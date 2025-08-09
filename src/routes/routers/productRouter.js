@@ -22,3 +22,5 @@ productRouter.put(
     validateBody(req, res, next, post_productValidationSchema),
   Products.PutController.putProduct,
 );
+
+productRouter.delete('/:id', Products.DeleteController.deleteProduct);

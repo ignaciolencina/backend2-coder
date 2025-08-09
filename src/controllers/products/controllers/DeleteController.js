@@ -9,9 +9,9 @@ export class DeleteController {
     } = req;
 
     try {
-      const action = await ProductRepository.deleteProduct(id);
+      const deletedProduct = await ProductRepository.deleteProduct(id);
 
-      if (action.deletedCount === 0) {
+      if (!deletedProduct) {
         res.status(HttpCodes.NOT_FOUND).json({
           data: null,
           message: 'El producto indicado no fue encontrado',
