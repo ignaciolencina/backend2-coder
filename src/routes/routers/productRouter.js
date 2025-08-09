@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { Products } from '../../controllers/products/productsIndex.js';
-import { post_productValidationSchema } from '../../helpers/validations/productValidationSchema.js';
+import { post_productValidationSchema, put_productValidationSchema } from '../../helpers/validations/productValidationSchema.js';
 import { validateBody } from '../../middlewares/validateBody.js';
 
 export const productRouter = express.Router();
@@ -19,7 +19,7 @@ productRouter.get('/:id', Products.GetController.getProduct);
 productRouter.put(
   '/:id',
   (req, res, next) =>
-    validateBody(req, res, next, post_productValidationSchema),
+    validateBody(req, res, next, put_productValidationSchema),
   Products.PutController.putProduct,
 );
 

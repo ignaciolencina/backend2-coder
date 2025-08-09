@@ -9,14 +9,14 @@ export class PutController {
       params: { id },
     } = req;
 
-    const updateData = {
-      name: body.name,
-      description: body.description,
-      code: body.code,
-      price: body.price,
-      stock: body.stock,
-      category: body.category,
-    };
+    const updateData = {};
+    
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.description !== undefined) updateData.description = body.description;
+    if (body.code !== undefined) updateData.code = body.code;
+    if (body.price !== undefined) updateData.price = body.price;
+    if (body.stock !== undefined) updateData.stock = body.stock;
+    if (body.category !== undefined) updateData.category = body.category;
 
     try {
       const updatedProduct = await ProductRepository.updateProduct(

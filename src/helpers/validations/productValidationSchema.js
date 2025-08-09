@@ -21,7 +21,7 @@ export const post_productValidationSchema = Joi.object({
     'any.required': "El campo 'price' es requerido",
     '*': "Revisa el campo 'price'",
   }),
-  stock: Joi.number().integer().min(1).required().messages({
+  stock: Joi.number().integer().required().messages({
     'any.required': "El campo 'stock' es requerido",
     '*': "Revisa el campo 'stock'",
   }),
@@ -30,3 +30,30 @@ export const post_productValidationSchema = Joi.object({
     '*': "Revisa el campo 'category'",
   }),
 });
+
+export const put_productValidationSchema = Joi.object({
+  name: Joi.string().trim().messages({
+    '*': "Revisa el campo 'name'",
+  }),
+  description: Joi.string().trim().messages({
+    '*': "Revisa el campo 'description'",
+  }),
+  code: Joi.string().trim().regex(codeRegex).messages({
+    'string.pattern.base':
+      "El campo 'code' debe contener 3 letras mayúsculas seguidas de 5 números",
+    '*': "Revisa el campo 'code'",
+  }),
+  price: Joi.number().integer().min(1).messages({
+    '*': "Revisa el campo 'price'",
+  }),
+  stock: Joi.number().integer().messages({
+    '*': "Revisa el campo 'stock'",
+  }),
+  category: Joi.string().trim().messages({
+    '*': "Revisa el campo 'category'",
+  }),
+})
+  .min(1)
+  .messages({
+    'object.min': 'Debes proporcionar al menos un campo para actualizar',
+  });
