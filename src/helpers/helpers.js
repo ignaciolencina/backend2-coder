@@ -50,5 +50,5 @@ export const generateResetToken = () => {
 };
 
 export const getResetTokenExpiration = () => {
-  return new Date(Date.now() + 3600000); // 1 hora desde ahora
+  return new Date(Date.now() + 3600000);
 };

@@ -13,7 +13,7 @@ export class PostController {
       if (!user) {
         return res.status(HttpCodes.UNAUTHORIZED).json({
           data: null,
-          message: info.message || 'Credenciales inválidas',
+          message: 'Credenciales inválidas',
         });
       }
 
@@ -22,9 +22,9 @@ export class PostController {
 
         res.cookie('jwt', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+          secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
-          maxAge: 60 * 60 * 1000, // 1 hora (igual que el token)
+          maxAge: 60 * 60 * 1000,
         });
 
         return res.json({
