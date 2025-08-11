@@ -2,20 +2,37 @@ import CartModel from '../../models/cartSchema.js';
 
 export class CartDAO {
   static async findAll() {
-    return CartModel.find();
+    return CartModel.find().populate('userId', 'first_name last_name email');
   }
 
   static async findById(id) {
-    return CartModel.findById(id);
+    return CartModel.findById(id).populate(
+      'userId',
+      'first_name last_name email',
+    );
+  }
+
+  static async findByUserId(userId) {
+    return CartModel.find({ userId }).populate(
+      'userId',
+      'first_name last_name email',
+    );
   }
 
   static async create(cartData) {
     const newCart = new CartModel(cartData);
-    return newCart.save();
+    const savedCart = await newCart.save();
+    return CartModel.findById(savedCart._id).populate(
+      'userId',
+      'first_name last_name email',
+    );
   }
 
   static async updateById(id, updateData) {
-    return CartModel.findByIdAndUpdate(id, updateData, { new: true });
+    return CartModel.findByIdAndUpdate(id, updateData, { new: true }).populate(
+      'userId',
+      'first_name last_name email',
+    );
   }
 
   static async addOrUpdateProduct(cartId, productId, quantity) {
@@ -32,11 +49,18 @@ export class CartDAO {
       cart.products.push({ productId, quantity });
     }
 
-    return cart.save();
+    const savedCart = await cart.save();
+    return CartModel.findById(savedCart._id).populate(
+      'userId',
+      'first_name last_name email',
+    );
   }
 
   static async deleteById(id) {
-    return CartModel.findByIdAndDelete(id);
+    return CartModel.findByIdAndDelete(id).populate(
+      'userId',
+      'first_name last_name email',
+    );
   }
 
   static async deleteProductById(cartId, productId) {
@@ -44,7 +68,7 @@ export class CartDAO {
       cartId,
       { $pull: { products: { productId } } },
       { new: true },
-    );
+    ).populate('userId', 'first_name last_name email');
     return updatedCart;
   }
 }

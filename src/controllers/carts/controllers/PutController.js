@@ -6,6 +6,7 @@ export class PutController {
   static async addOrUpdateProduct(req, res) {
     const { cartId, productId } = req.params;
     const { quantity } = req.body;
+    const { user } = req;
 
     try {
       if (!quantity || quantity < 1) {
@@ -14,17 +15,29 @@ export class PutController {
         });
       }
 
+      const cart = await CartRepository.getCartById(cartId);
+
+      if (!cart) {
+        return res.status(HttpCodes.NOT_FOUND).json({
+          data: null,
+          message: 'Carrito no encontrado',
+        });
+      }
+
+      const cartUserId = cart.userId._id || cart.userId;
+
+      if (user.role !== 'admin' && cartUserId.toString() !== user.id.toString()) {
+        return res.status(HttpCodes.FORBIDDEN).json({
+          data: null,
+          message: 'No tienes permisos para modificar este carrito',
+        });
+      }
+
       const updatedCart = await CartRepository.addOrUpdateProduct(
         cartId,
         productId,
         quantity,
       );
-
-      if (!updatedCart) {
-        return res.status(HttpCodes.NOT_FOUND).json({
-          message: 'Carrito no encontrado',
-        });
-      }
 
       return res.status(HttpCodes.OK).json({
         data: updatedCart,
