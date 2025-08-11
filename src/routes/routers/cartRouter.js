@@ -24,6 +24,12 @@ cartRouter.get(
   Carts.GetController.getCart,
 );
 
+cartRouter.post(
+  '/:cartId/purchase',
+  requireRole(['user', 'admin']),
+  Carts.PostController.purchaseCart,
+);
+
 cartRouter.put(
   '/:cartId/product/:productId',
   requireRole(['user', 'admin']),
