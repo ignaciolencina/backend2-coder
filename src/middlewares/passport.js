@@ -63,7 +63,8 @@ passport.use(
           return done(null, false, { message: 'Usuario no encontrado' });
         }
 
-        return done(null, user);
+        const userDTO = UserDTO.fromUser(user);
+        return done(null, userDTO);
       } catch (error) {
         return done(error, false, { message: 'Error al validar el token' });
       }

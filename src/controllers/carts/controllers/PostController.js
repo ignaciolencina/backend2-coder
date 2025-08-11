@@ -4,17 +4,18 @@ import { internalError } from '../../../helpers/helpers.js';
 
 export class PostController {
   static async postCart(req, res) {
-    const { body } = req;
-
-    const cartData = {
-      products: body.products,
-    };
+    const { body, user } = req;
 
     try {
-      await CartRepository.createCart(cartData);
+      const cartData = {
+        userId: user.id,
+        products: body.products || [],
+      };
+
+      const newCart = await CartRepository.createCart(cartData);
 
       return res.status(HttpCodes.CREATED).json({
-        data: null,
+        data: newCart,
         message: 'Carrito creado correctamente',
       });
     } catch (e) {

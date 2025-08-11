@@ -12,6 +12,11 @@ export class CartRepository {
     return cart ? CartDTO.fromCart(cart) : null;
   }
 
+  static async getCartsByUserId(userId) {
+    const carts = await CartDAO.findByUserId(userId);
+    return CartDTO.fromCarts(carts);
+  }
+
   static async createCart(cartData) {
     const newCart = await CartDAO.create(cartData);
     return CartDTO.fromCart(newCart);
